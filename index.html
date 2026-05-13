@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>¡Cumpleaños de Américo Alexander!</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Fredoka+One&family=Chewy&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* ════════════════════════════════════════════════
+       🎨 PERSONALIZACIÓN FÁCIL - CAMBIA ESTOS VALORES:
+
+       --adorno-size: Tamaño de los globos y adornos de esquina
+       --hoja-size:   Tamaño de las hojas/plantas decorativas
+
+       Aumenta el número para agrandar, disminúyelo para rebajar.
+       ════════════════════════════════════════════════ */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --azul-oscuro: #1B5E9E;
+      --azul-medio: #2E8BDB;
+      --azul-claro: #6BB8FF;
+      --azul-pastel: #B8E0FF;
+      --naranja-oscuro: #E86A1F;
+      --naranja-medio: #FF8C42;
+      --naranja-claro: #FFB366;
+      --naranja-pastel: #FFD9B3;
+      --amarillo: #FFE066;
+      --amarillo-claro: #FFF5CC;
+      --crema: #FFF9F0;
+      --blanco: #FFFFFF;
+      --celeste-fondo: #E8F4FD;
+      --texto: #2D4059;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: var(--azul-claro);
+      color: var(--texto);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── FONDO INFANTIL CON PUNTOS Y ESTRELLAS ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        radial-gradient(circle at 10% 20%, var(--azul-pastel) 3px, transparent 3px),
+        radial-gradient(circle at 30% 60%, var(--naranja-medio) 4px, transparent 4px),
+        radial-gradient(circle at 70% 30%, var(--amarillo) 3px, transparent 3px),
+        radial-gradient(circle at 85% 80%, var(--azul-claro) 5px, transparent 5px),
+        radial-gradient(circle at 50% 50%, var(--blanco) 3px, transparent 3px),
+        radial-gradient(circle at 15% 85%, var(--amarillo) 4px, transparent 4px),
+        radial-gradient(circle at 90% 10%, var(--azul-claro) 3px, transparent 3px),
+        radial-gradient(circle at 40% 90%, var(--amarillo) 5px, transparent 5px),
+        radial-gradient(circle at 65% 15%, var(--celeste-fondo) 3px, transparent 3px),
+        radial-gradient(circle at 25% 40%, var(--azul-pastel) 4px, transparent 4px);
+      background-size: 200px 200px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    /* ── COVER PAGE ── */
+    #cover {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      background: var(--celeste-fondo);
+      user-select: none;
+      overflow: hidden;
+    }
+    #cover img {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      opacity: 1 !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    #cover:hover img {
+      opacity: 1 !important;
+    }
+    #cover .tap-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+      letter-spacing: 0.15em;
+      color: var(--naranja-oscuro);
+      text-transform: uppercase;
+      white-space: nowrap;
+      animation: blink 2s ease-in-out infinite;
+      z-index: 2;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.8);
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 30px;
+      backdrop-filter: blur(4px);
+    }
+    @keyframes blink {
+      0%,100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ── CONTENT (hidden until cover clicked) ── */
+    #content {
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      background: transparent;
+    }
+    #content.visible {
+      opacity: 1;
+    }
+
+    /* ─── FUENTES INFANTILES ─── */
+    .font-titulo {
+      font-family: 'Fredoka One', cursive;
+    }
+    .font-cursiva {
+      font-family: 'Chewy', cursive;
+    }
+    .font-texto {
+      font-family: 'Baloo 2', cursive;
+    }
+
+    /* ══════════════════════════════════════════
+       ADORNOS DE ESQUINA (globos, etc.)
+    ══════════════════════════════════════════ */
+    .corner-decor {
+      position: absolute;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .corner-decor.visible { opacity: 1; }
+
+    /* ══════════════════════════════════════════
+       VARIABLE PARA AJUSTAR TAMAÑO DE ADORNOS
+       Cambia --adorno-size para agrandar/rebajar
+    ══════════════════════════════════════════ */
+    :root {
+      --adorno-size: 10000px;  /* ← CAMBIA ESTE VALOR para agrandar o rebajar adornos */
+    }
+
+    .corner-tl  { top: 0px;  left: -10px;  width: clamp(120px, 18vw, var(--adorno-size)); }
+    .corner-tr  { top: 0px;  right: -10px; width: clamp(120px, 18vw, var(--adorno-size)); }
+    .corner-bl  { bottom: -15px; left: -10px;  width: clamp(120px, 18vw, var(--adorno-size)); }
+    .corner-br  { bottom: -15px; right: -10px; width: clamp(120px, 18vw, var(--adorno-size)); }
+
+    section { position: relative; overflow: visible; }
+
+    
+
+    /* ══════════════════════════════════════════
+       HOJAS SUPERPUESTAS GLOBALES
+    ══════════════════════════════════════════ */
+    .leaf-layer {
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .leaf-layer.visible { opacity: 1; }
+
+    /* Variable para hojas decorativas */
+    :root {
+      --hoja-size: 200px;  /* ← CAMBIA ESTE VALOR para agrandar/rebajar hojas */
+    }
+
+    .leaf-tl  { top: -30px;  left: -20px;  width: clamp(100px, 20vw, var(--hoja-size)); transform: rotate(-20deg); }
+    .leaf-tr  { top: -20px;  right: -15px; width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9));  transform: rotate(20deg) scaleX(-1); }
+    .leaf-bl  { bottom: -30px; left: -15px;  width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9));  transform: rotate(15deg); }
+    .leaf-br  { bottom: -25px; right: -20px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 0.95)); transform: rotate(-15deg) scaleX(-1); }
+    .leaf-mid-l { top: 40%; left: -25px; width: clamp(80px, 15vw, calc(var(--hoja-size) * 0.75)); transform: rotate(-5deg); }
+    .leaf-mid-r { top: 35%; right: -20px; width: clamp(80px, 15vw, calc(var(--hoja-size) * 0.75)); transform: rotate(8deg) scaleX(-1); }
+
+    /* ══════════════════════════════════════════
+       SECCIÓN 1: HERO / BIENVENIDA
+    ══════════════════════════════════════════ */
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem);
+      padding-top: clamp(4rem, 10vw, 7rem);
+      padding-bottom: clamp(4rem, 10vw, 7rem);
+    }
+
+    /* Plantas SOBRE el contenido */
+    .hero-plants {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .vplant {
+      position: absolute;
+      opacity: 0.85;
+    }
+    .vplant-tl { top: -10px; left: -10px; width: clamp(110px, 22vw, calc(var(--hoja-size) * 1.1)); transform: rotate(-20deg); }
+    .vplant-tr { top: -10px; right: -10px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 1.0)); transform: rotate(20deg) scaleX(-1); }
+    .vplant-bl { bottom: -10px; left: -5px; width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9)); transform: rotate(15deg); }
+    .vplant-br { bottom: -10px; right: -5px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 1.0)); transform: rotate(-20deg) scaleX(-1); }
+
+    .hero-inner {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .hero-birthday-number {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(7rem, 20vw, 12rem);
+      color: var(--blanco);
+      text-align: center;
+      display: block;
+      width: 100%;
+      margin-bottom: 0.1rem;
+      text-shadow: 3px 4px 0px var(--azul-oscuro), 6px 7px 0px rgba(255, 205, 175, 0.2);
+      line-height: 1;
+      -webkit-text-stroke: 2px var(--azul-oscuro);
+    }
+
+    .hero-birthday-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: var(--azul-oscuro);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0px var(--azul-pastel);
+    }
+
+    .hero-name {
+      font-family: 'Chewy', cursive;
+      font-size: clamp(3rem, 8vw, 4rem);
+      color: var(--blanco);
+      text-align: center;
+      display: block;
+      width: 100%;
+      margin-bottom: 0.3rem;
+      text-shadow: 2px 3px 0px var(--azul-oscuro);
+    }
+
+    .hero-apellido {
+      font-family: 'Chewy', sans-serif;
+      font-weight: 600;
+      font-size: clamp(2.6rem, 4vw, 2rem);
+      color: var(--blanco);
+      letter-spacing: 0.05em;
+      text-shadow: 2px 3px 0px var(--azul-oscuro);
+    }
+
+    .hero-text {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 0 0.5rem;
+    }
+    .hero-text h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 4.5vw, 2.2rem);
+      color: var(--azul-pastel);
+      margin-bottom: 1.8rem;
+      text-shadow: 1px 2px 0px var(--azul-oscuro);
+      line-height: 0.1;
+      -webkit-text-stroke: 0.5px var(--azul-oscuro);
+    }
+    .hero-text p {
+      font-family: 'Chewy', cursive;
+      font-size: clamp(1.6rem, 3.5vw, 1.4rem);
+      color: var(--azul-oscuro);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════════
+       SECCIÓN 2: MENSAJE ESPECIAL
+    ══════════════════════════════════════════ */
+    .message-section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message-container {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--blanco);
+      padding: clamp(1.8rem, 5vw, 3rem);
+      border-radius: 28px;
+      box-shadow: 0 10px 40px rgba(27,94,158,0.12);
+      position: relative;
+      z-index: 2;
+      border: 4px dashed var(--azul-claro);
+    }
+    .message-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      color: var(--naranja-oscuro);
+      margin-bottom: 1.2rem;
+      text-shadow: 2px 2px 0px var(--naranja-pastel);
+    }
+    .message-text {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      line-height: 1.8;
+      color: var(--texto);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+    .birthday-name {
+      font-family: 'Chewy', cursive;
+      font-size: clamp(2rem, 6vw, 3rem);
+      color: var(--azul-medio);
+      display: block;
+      margin: 1.2rem 0;
+      text-shadow: 2px 2px 0px var(--azul-pastel);
+    }
+
+    /* ══════════════════════════════════════════
+       CUENTA REGRESIVA
+    ══════════════════════════════════════════ */
+    .countdown-section {
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .countdown-container { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+    .countdown-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      color: var(--azul-oscuro);
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 0px var(--azul-pastel);
+    }
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(0.4rem, 2vw, 1.2rem);
+      flex-wrap: nowrap;
+    }
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: clamp(55px, 15vw, 100px);
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 0.8rem 0.5rem;
+      box-shadow: 0 5px 20px rgba(27,94,158,0.1);
+      border: 3px solid var(--azul-pastel);
+    }
+    .countdown-number {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      color: var(--naranja-oscuro);
+      line-height: 1;
+      display: block;
+      text-shadow: 2px 2px 0px var(--naranja-pastel);
+    }
+    .countdown-label {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(0.6rem, 2vw, 0.9rem);
+      color: var(--azul-medio);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+    .countdown-separator {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 7vw, 4rem);
+      color: var(--naranja-claro);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ══════════════════════════════════════════
+       FECHA Y HORA
+    ══════════════════════════════════════════ */
+    .datetime-section {
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .datetime-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+      gap: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .datetime-card {
+      background: var(--blanco);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(27,94,158,0.12);
+      border: 4px solid var(--azul-claro);
+      position: relative;
+    }
+    .datetime-card::after {
+      content: '';
+      position: absolute;
+      top: -8px; right: -8px;
+      width: 30px; height: 30px;
+      background: var(--naranja-claro);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    .datetime-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(0.9rem, 3vw, 1.2rem);
+      color: var(--naranja-oscuro);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+    }
+    .datetime-value {
+      font-family: 'Chewy', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: var(--azul-oscuro);
+    }
+
+    /* ══════════════════════════════════════════
+       LUGAR
+    ══════════════════════════════════════════ */
+    .location-section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .location-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--blanco);
+      padding: clamp(1.8rem, 5vw, 3rem);
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(27,94,158,0.1);
+      position: relative;
+      z-index: 2;
+      border: 4px dashed var(--naranja-claro);
+    }
+    .location-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      color: var(--azul-oscuro);
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 0px var(--azul-pastel);
+    }
+    .location-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.1rem, 4vw, 1.6rem);
+      color: var(--azul-medio);
+      margin-bottom: 1.2rem;
+    }
+    .location-address {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(0.95rem, 3vw, 1.2rem);
+      color: var(--texto);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+    .location-btn {
+      display: inline-block;
+      padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.5rem, 5vw, 2.5rem);
+      background: linear-gradient(135deg, var(--azul-claro) 0%, var(--azul-medio) 100%);
+      color: var(--blanco);
+      text-decoration: none;
+      border-radius: 50px;
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 1.5rem;
+      border: 3px solid var(--blanco);
+      box-shadow: 0 5px 15px rgba(27,94,158,0.3);
+    }
+    .location-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(27,94,158,0.4);
+    }
+
+    /* Mapa iframe */
+    .map-wrapper {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(27,94,158,0.15);
+      border: 4px solid var(--azul-pastel);
+    }
+    .map-wrapper iframe {
+      width: 100%;
+      height: 350px;
+      border: none;
+      display: block;
+    }
+
+   
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    .footer {
+      padding: clamp(0rem, 10vw, 6rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 3rem);
+      background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 100%);
+      color: var(--blanco);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-content { position: relative; z-index: 3; }
+
+    .footer-text {
+      font-family: 'Chewy', cursive;
+      font-size: clamp(2rem, 6vw, 3rem);
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    }
+
+    /* ══════════════════════════════════════════
+       MÚSICA
+    ══════════════════════════════════════════ */
+    .music-control {
+      position: fixed;
+      bottom: 25px;
+      right: 20px;
+      width: clamp(50px, 10vw, 60px);
+      height: clamp(50px, 10vw, 60px);
+      background: linear-gradient(135deg, var(--naranja-claro) 0%, var(--naranja-oscuro) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(232,106,42,0.35);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      animation: pulse 2s infinite;
+      border: 3px solid var(--blanco);
+    }
+    .music-control:hover { transform: scale(1.1); }
+    .music-control.playing { animation: pulse 2s infinite, rotateAnim 4s linear infinite; }
+    @keyframes pulse   { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    @keyframes rotateAnim { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      .countdown-grid {
+        flex-wrap: wrap;
+      }
+      .countdown-item {
+        min-width: 60px;
+      }
+      .map-wrapper iframe {
+        height: 250px;
+      }
+      .corner-decor {
+        width: clamp(80px, 22vw, calc(var(--adorno-size) * 0.6)) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Música de fondo (MP3 local) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="Índigo - Camilo.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ── COVER: the entire page 1 is a button ── -->
+  <div id="cover">
+    <img src="portada carta.png" alt="portada carta">
+    <div class="tap-hint">Toca para abrir la invitación</div>
+  </div>
+
+  <!-- ── ALL CONTENT (shown after click, 1s fade) ── -->
+  <div id="content">
+
+    <!-- ═══════════════════════════════════════════════
+         SECCIÓN 1: HERO / BIENVENIDA
+    ═══════════════════════════════════════════════ -->
+    <section class="hero-section" id="sec-hero">
+
+      <!-- Adornos de esquina - globos y decoraciones infantiles -->
+      <img src="globo esquina superior.png" alt="globo esquina superior izquierda" class="corner-decor corner-tl" id="c1-tl">
+      <img src="globo esquina superior.png" alt="globo esquina superior derecha" class="corner-decor corner-tr" id="c1-tr">
+      <img src="globo esquina inferior.png" alt="globo esquina inferior izquierda" class="corner-decor corner-bl" id="c1-bl">
+      <img src="globo esquina inferior derecha.png" alt="globo esquina inferior derecha" class="corner-decor corner-br" id="c1-br">
+
+
+      <div class="hero-inner" data-aos="fade-down" data-aos-duration="1200">
+        <span class="hero-birthday-number">4</span>
+        <span class="hero-birthday-label">¡Años!</span>
+        <span class="hero-name">Américo Alexander</span>
+        <span class="hero-apellido">Choque Flores</span>
+
+        <div class="hero-text">
+          <h1>¡Estoy de cumpleaños!</h1>
+          <p>Te invito a celebrar conmigo este día tan especial</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         CUENTA REGRESIVA
+    ═══════════════════════════════════════════════ -->
+    <section class="countdown-section" id="sec-countdown">
+
+      <!-- Adornos de esquina -->
+
+      <div class="countdown-container" data-aos="fade-down" data-aos-duration="1200">
+        <h2 class="countdown-title font-titulo">¡Ya viene mi fiesta!</h2>
+
+        <div class="countdown-grid">
+          <div class="countdown-item" data-aos="fade-down" data-aos-delay="100">
+            <span class="countdown-number font-titulo" id="dias">00</span>
+            <span class="countdown-label font-texto">Días</span>
+          </div>
+          <div class="countdown-separator font-titulo">:</div>
+          <div class="countdown-item" data-aos="fade-down" data-aos-delay="200">
+            <span class="countdown-number font-titulo" id="horas">00</span>
+            <span class="countdown-label font-texto">Horas</span>
+          </div>
+          <div class="countdown-separator font-titulo">:</div>
+          <div class="countdown-item" data-aos="fade-down" data-aos-delay="300">
+            <span class="countdown-number font-titulo" id="minutos">00</span>
+            <span class="countdown-label font-texto">Min</span>
+          </div>
+          <div class="countdown-separator font-titulo">:</div>
+          <div class="countdown-item" data-aos="fade-down" data-aos-delay="400">
+            <span class="countdown-number font-titulo" id="segundos">00</span>
+            <span class="countdown-label font-texto">Seg</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         FECHA Y HORA
+    ═══════════════════════════════════════════════ -->
+    <section class="datetime-section" id="sec-datetime">
+
+      <!-- Adornos de esquina -->
+      <img src="pastel.png" alt="pastel esquina superior izquierda" class="corner-decor corner-tl" id="c4-tl">
+      <img src="globo esquina superior.png" alt="pastel esquina superior derecha" class="corner-decor corner-tr" id="c4-tr">
+      <img src="globo esquina superior.png" alt="pastel esquina inferior izquierda" class="corner-decor corner-bl" id="c4-bl">
+      <img src="pastel.png" alt="pastel esquina inferior derecha" class="corner-decor corner-br" id="c4-br">
+
+      <div class="datetime-container">
+        <div class="datetime-card" data-aos="fade-right" data-aos-duration="1000">
+          <div class="datetime-label">Fecha</div>
+          <div class="datetime-value">Sábado 16 de Mayo</div>
+        </div>
+        <div class="datetime-card" data-aos="fade-left" data-aos-duration="1000">
+          <div class="datetime-label">Hora</div>
+          <div class="datetime-value">3:00 PM</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         LUGAR
+    ═══════════════════════════════════════════════ -->
+    <section class="location-section" id="sec-location">
+
+      <!-- Adornos de esquina -->
+      <img src="globo esquina superior.png" alt="regalo esquina inferior izquierda" class="corner-decor corner-bl" id="c5-bl">
+      <img src="globo esquina superior.png" alt="regalo esquina inferior derecha" class="corner-decor corner-br" id="c5-br">
+
+      <img src="planta-hoja-5.png" alt="" class="leaf-layer leaf-tl" id="l6a">
+      <img src="planta-hoja-3.png" alt="" class="leaf-layer leaf-br" id="l6b">
+
+      <div class="location-container" data-aos="fade-down" data-aos-duration="1200">
+        <h2 class="location-title">Lugar del Evento</h2>
+        <p class="location-name">Salón de Eventos Infantiles</p>
+        <p class="location-address">
+          Av. Franco Valle, Entre Av. Satélite y C.10<br>
+          Edificio "Real", 4to Piso (con ascensor)<br>
+          Cerca a juzgados, DD.RR, cruce Viacha
+        </p>
+
+        <!-- Mapa embebido -->
+        <div class="map-wrapper">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d549.2506986020454!2d-68.16607217655141!3d-16.515791988643947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915edf004c4c9747%3A0x674157808b71889b!2sMolto%20divertido%20sal%C3%B3n%20de%20eventos%20infantiles!5e0!3m2!1ses-419!2sbo!4v1778680094364!5m2!1ses-419!2sbo" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════════ -->
+    <footer class="footer" id="sec-footer">
+
+      <div class="footer-content" data-aos="fade-down" data-aos-duration="1200">
+        <!-- León central arriba -->
+
+        <p class="footer-text">¡Te esperamos!</p>
+      </div>
+    </footer>
+
+ 
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // ── AOS con mirror=true para animaciones al volver a subir ──
+    AOS.init({
+      duration: 1000,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: true,
+      offset: 80
+    });
+
+    
+
+    // ── Contador regresivo ──
+    const fechaEvento = new Date('May 16, 2026 15:00:00').getTime();
+    function actualizarContador() {
+      const dist = fechaEvento - Date.now();
+      const safe = Math.max(0, dist);
+      document.getElementById('dias').textContent     = String(Math.floor(safe / 86400000)).padStart(2,'0');
+      document.getElementById('horas').textContent    = String(Math.floor((safe % 86400000) / 3600000)).padStart(2,'0');
+      document.getElementById('minutos').textContent  = String(Math.floor((safe % 3600000) / 60000)).padStart(2,'0');
+      document.getElementById('segundos').textContent = String(Math.floor((safe % 60000) / 1000)).padStart(2,'0');
+    }
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+
+    // ── COVER CLICK → SHOW CONTENT + INICIAR MÚSICA ──
+    const cover   = document.getElementById('cover');
+    const content = document.getElementById('content');
+
+    cover.addEventListener('click', openInvitation);
+    cover.addEventListener('touchend', openInvitation, {passive: true});
+
+    function openInvitation() {
+      cover.style.display = 'none';
+      content.style.display = 'block';
+      content.offsetHeight; // force reflow
+      content.classList.add('visible');
+      startMusic();
+      // Reinicializar AOS para que detecte las secciones recién visibles
+      setTimeout(() => { AOS.refresh(); }, 100);
+    }
+
+    // ── MÚSICA con MP3 local ──
+    const audio = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    function startMusic() {
+      audio.volume = 0.75;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isPlaying = true;
+          document.getElementById('musicToggle').classList.add('playing');
+        }).catch(() => {
+          // El autoplay fue bloqueado por el navegador; el usuario puede usar el botón
+          isPlaying = false;
+        });
+      }
+    }
+
+    function toggleMusic() {
+      const mt = document.getElementById('musicToggle');
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        mt.classList.remove('playing');
+      } else {
+        audio.play();
+        isPlaying = true;
+        mt.classList.add('playing');
+      }
+    }
+
+    // ── TRANSICIONES FADE ENTRE SECCIONES ──
+    const sectionFadeStyle = document.createElement('style');
+    sectionFadeStyle.textContent = `
+      .section-fade {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+      .section-fade.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
+    document.head.appendChild(sectionFadeStyle);
+
+    function initSectionFades() {
+      const targets = document.querySelectorAll('#content section, #content footer');
+      const fadeObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+          } else {
+            e.target.classList.remove('in-view');
+          }
+        });
+      }, { threshold: 0.08 });
+
+      targets.forEach(el => {
+        el.classList.add('section-fade');
+        fadeObs.observe(el);
+      });
+    }
+
+    setTimeout(initSectionFades, 200);
+
+    // ── Hojas visibles con scroll (IntersectionObserver) ──
+    const leafIds = ['l1a','l1b','l3a','l3b',
+                     'l4c','l5a','l5b','l6a','l6b'];
+    const leafObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        } else {
+          e.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.05 });
+
+    leafIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) leafObs.observe(el);
+    });
+
+    // ── Adornos de esquina visibles con scroll ──
+    const cornerIds = [
+      'c1-tl','c1-tr','c1-bl','c1-br',
+      'c2-tl','c2-tr','c2-bl','c2-br',
+      'c3-tl','c3-tr','c3-bl','c3-br',
+      'c4-tl','c4-tr','c4-bl','c4-br',
+      'c5-tl','c5-tr','c5-bl','c5-br',
+      'c6-tl','c6-tr','c6-bl','c6-br',
+      'c7-tl','c7-tr'
+    ];
+    const cornerObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        } else {
+          e.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.05 });
+
+    cornerIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) cornerObs.observe(el);
+    });
+
+    // ── Smooth scroll ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
