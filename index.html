@@ -13,14 +13,6 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
-    /* ════════════════════════════════════════════════
-       🎨 PERSONALIZACIÓN FÁCIL - CAMBIA ESTOS VALORES:
-
-       --adorno-size: Tamaño de los globos y adornos de esquina
-       --hoja-size:   Tamaño de las hojas/plantas decorativas
-
-       Aumenta el número para agrandar, disminúyelo para rebajar.
-       ════════════════════════════════════════════════ */
 
     * {
       margin: 0;
@@ -51,7 +43,11 @@
 
     body {
       font-family: 'Fredoka', sans-serif;
-      background-color: var(--azul-claro);
+      background-image: url(fondo\ toystoryreal.png);
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+      background-color: #6BB8FF;
       color: var(--texto);
       overflow-x: hidden;
       line-height: 1.6;
@@ -80,18 +76,25 @@
     }
 
     /* ── COVER PAGE ── */
+    body.cover-active {
+      overflow: hidden !important;
+      height: 100vh !important;
+      touch-action: none !important;
+    }
     #cover {
       width: 100%;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      position: relative;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: var(--celeste-fondo);
       user-select: none;
       overflow: hidden;
+      z-index: 1000;
     }
     #cover img {
       width: 100%;
@@ -173,42 +176,17 @@
        Cambia --adorno-size para agrandar/rebajar
     ══════════════════════════════════════════ */
     :root {
-      --adorno-size: 10000px;  /* ← CAMBIA ESTE VALOR para agrandar o rebajar adornos */
+      --adorno-size: 10000px;  
     }
 
     .corner-tl  { top: 0px;  left: -10px;  width: clamp(120px, 18vw, var(--adorno-size)); }
     .corner-tr  { top: 0px;  right: -10px; width: clamp(120px, 18vw, var(--adorno-size)); }
     .corner-bl  { bottom: -15px; left: -10px;  width: clamp(120px, 18vw, var(--adorno-size)); }
-    .corner-br  { bottom: -15px; right: -10px; width: clamp(120px, 18vw, var(--adorno-size)); }
+    .corner-br  { bottom: 50px; right: -10px; width: clamp(120px, 18vw, var(--adorno-size)); }
 
     section { position: relative; overflow: visible; }
 
     
-
-    /* ══════════════════════════════════════════
-       HOJAS SUPERPUESTAS GLOBALES
-    ══════════════════════════════════════════ */
-    .leaf-layer {
-      position: absolute;
-      pointer-events: none;
-      z-index: 3;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    .leaf-layer.visible { opacity: 1; }
-
-    /* Variable para hojas decorativas */
-    :root {
-      --hoja-size: 200px;  /* ← CAMBIA ESTE VALOR para agrandar/rebajar hojas */
-    }
-
-    .leaf-tl  { top: -30px;  left: -20px;  width: clamp(100px, 20vw, var(--hoja-size)); transform: rotate(-20deg); }
-    .leaf-tr  { top: -20px;  right: -15px; width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9));  transform: rotate(20deg) scaleX(-1); }
-    .leaf-bl  { bottom: -30px; left: -15px;  width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9));  transform: rotate(15deg); }
-    .leaf-br  { bottom: -25px; right: -20px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 0.95)); transform: rotate(-15deg) scaleX(-1); }
-    .leaf-mid-l { top: 40%; left: -25px; width: clamp(80px, 15vw, calc(var(--hoja-size) * 0.75)); transform: rotate(-5deg); }
-    .leaf-mid-r { top: 35%; right: -20px; width: clamp(80px, 15vw, calc(var(--hoja-size) * 0.75)); transform: rotate(8deg) scaleX(-1); }
-
     /* ══════════════════════════════════════════
        SECCIÓN 1: HERO / BIENVENIDA
     ══════════════════════════════════════════ */
@@ -218,34 +196,130 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem);
-      padding-top: clamp(4rem, 10vw, 7rem);
-      padding-bottom: clamp(4rem, 10vw, 7rem);
+      overflow: visible;
+      padding: clamp(4rem, 10vw, 7rem) 0 clamp(4rem, 10vw, 7rem);
     }
 
-    /* Plantas SOBRE el contenido */
-    .hero-plants {
+    /* ── imágenes flotantes alrededor ── */
+    .hero-float {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
-      z-index: 5;
+      z-index: 3;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+      animation: floatImg 3.5s ease-in-out infinite;
     }
-    .vplant {
-      position: absolute;
-      opacity: 0.85;
+    .hero-float:nth-child(2)  { animation-delay: 0s;    }
+    .hero-float:nth-child(3)  { animation-delay: 0.7s;  }
+    .hero-float:nth-child(4)  { animation-delay: 1.4s;  }
+    .hero-float:nth-child(5)  { animation-delay: 0.3s;  }
+    .hero-float:nth-child(6)  { animation-delay: 1.0s;  }
+    .hero-float:nth-child(7)  { animation-delay: 1.7s;  }
+    .hero-float:nth-child(8)  { animation-delay: 0.5s;  }
+    @keyframes floatImg {
+      0%,100% { transform: translateY(0px) rotate(0deg); }
+      50%      { transform: translateY(-14px) rotate(3deg); }
     }
-    .vplant-tl { top: -10px; left: -10px; width: clamp(110px, 22vw, calc(var(--hoja-size) * 1.1)); transform: rotate(-20deg); }
-    .vplant-tr { top: -10px; right: -10px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 1.0)); transform: rotate(20deg) scaleX(-1); }
-    .vplant-bl { bottom: -10px; left: -5px; width: clamp(90px, 18vw, calc(var(--hoja-size) * 0.9)); transform: rotate(15deg); }
-    .vplant-br { bottom: -10px; right: -5px; width: clamp(100px, 20vw, calc(var(--hoja-size) * 1.0)); transform: rotate(-20deg) scaleX(-1); }
 
+/* Contenedor padre - DEBE tener position: relative */
+.photo-section, .hero-section {
+  position: relative; /* ← IMPORTANTE */
+}
+
+/* Imágenes flotantes - TODAS con position: absolute */
+.hf-tl  { 
+  position: absolute;
+  top: 45%;   
+  left: -20px;    
+  width: 180px;  /* ← Tamaño fijo primero para probar */
+  z-index: 1;
+}
+
+.hf-tr  { 
+  position: absolute;
+  top: 55%;   
+  right: -20px;   
+  width: 180px;
+  transform: scaleX(-1); 
+  z-index: 1;
+}
+
+.hf-ml  { 
+  position: absolute;
+  top: 20%;  
+  left: -10px;    
+  width: 160px;
+  z-index: 1;
+}
+
+.hf-mr  { 
+  position: absolute;
+  top: 30%;  
+  right: -10px;   
+  width: 160px;
+  transform: scaleX(-1); 
+  z-index: 1;
+}
+
+.hf-bl  { 
+  position: absolute;
+  bottom: 15%; 
+  left: -15px;   
+  width: 180px;
+  transform: scaleY(-1); 
+  z-index: 1;
+}
+
+.hf-br  { 
+  position: absolute;
+  bottom: 15%; 
+  right: -15px;  
+  width: 180px;
+  transform: scale(-1); 
+  z-index: 1;
+}
+
+/* Responsive - Móvil */
+@media (max-width: 768px) {
+  .hf-tl, .hf-tr, .hf-bl, .hf-br {
+    width: 140px !important;
+  }
+  .hf-ml, .hf-mr {
+    width: 120px !important;
+  }
+}
+    
+    /* ══════════════════════════════════════════
+       SECCIÓN 1: FOTO / IMAGEN TOY STORY
+    ══════════════════════════════════════════ */
+    .photo-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+      position: relative;
+    }
+    .img-toy-story {
+      width: 100vw;
+      max-width: 100vw;
+      height: auto;
+      object-fit: contain;
+      object-position: center top;
+      display: block;
+      margin: 0 auto 1rem;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
     .hero-inner {
       position: relative;
       width: 100%;
-      max-width: 500px;
+      max-width: 100%;
       z-index: 2;
       text-align: center;
+      overflow: visible;
     }
 
     .hero-birthday-number {
@@ -296,18 +370,46 @@
       margin-top: 1.5rem;
       padding: 0 0.5rem;
     }
-
-    .hero-text p {
-          font-family: 'Fredoka One', cursive;
-      font-size: clamp(2rem, 4.5vw, 2.2rem);
-      color: var(--azul-pastel);
-      margin-bottom: 1.8rem;
-      text-shadow: 1px 2px 0px var(--azul-oscuro);
-      line-height: 1.5;
-      -webkit-text-stroke: 0.5px var(--azul-oscuro);
+     .parents-section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem);
+      position: relative;
+      overflow: hidden;
     }
-    
 
+
+      .parents-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+
+   .parents-photo-frame {
+      position: relative;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      padding: 30px;
+      background: var(--blanco);
+      border-radius: 24px;
+      box-shadow: 0 15px 50px rgba(139,111,78,0.15);
+    }
+    .parents-photo-frame::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      border: 2px solid var(--rosa-palo);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .parents-photo {
+      width: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+      aspect-ratio: 4/5;
+      display: block;
+    }
     /* ══════════════════════════════════════════
        CUENTA REGRESIVA
     ══════════════════════════════════════════ */
@@ -404,7 +506,7 @@
     .datetime-label {
       font-family: 'Fredoka One', cursive;
       font-size: clamp(0.9rem, 3vw, 1.2rem);
-      color: var(--naranja-oscuro);
+      color: var(--amarillo);
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 0.8rem;
@@ -412,7 +514,7 @@
     .datetime-value {
       font-family: 'Chewy', cursive;
       font-size: clamp(1.6rem, 5vw, 2.4rem);
-      color: var(--azul-oscuro);
+      color: var(--azul-claro);
     }
 
     /* ══════════════════════════════════════════
@@ -433,14 +535,13 @@
       box-shadow: 0 10px 40px rgba(27,94,158,0.1);
       position: relative;
       z-index: 2;
-      border: 4px dashed var(--naranja-claro);
+      border: 4px dashed var(--amarillo);
     }
     .location-title {
       font-family: 'Fredoka One', cursive;
       font-size: clamp(1.8rem, 6vw, 2.8rem);
-      color: var(--azul-oscuro);
+      color: var(--naranja-claro);
       margin-bottom: 1.5rem;
-      text-shadow: 2px 2px 0px var(--azul-pastel);
     }
     .location-name {
       font-family: 'Fredoka One', cursive;
@@ -493,44 +594,120 @@
     }
 
    
-    /* ══════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════ */
-    .footer {
-      padding: clamp(0rem, 10vw, 6rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 3rem);
-      background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 100%);
-      color: var(--blanco);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
 
-    .footer-content { position: relative; z-index: 3; }
-
-    .footer-text {
-      font-family: 'Chewy', cursive;
-      font-size: clamp(2rem, 6vw, 3rem);
-      margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-    }
 
     /* ══════════════════════════════════════════
-       RESPONSIVE
+       RESPONSIVE — MÓVIL PRIMERO
     ══════════════════════════════════════════ */
+
+    /* ── ≤ 768px ── */
+    @media (max-width: 768px) {
+      .hero-section { padding: 3rem 0 3rem; }
+
+      /* Imagen principal ENORME en móvil */
+      .img-toy-story {
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+
+      /* Texto nombre más grande */
+      .hero-name    { font-size: clamp(2.8rem, 10vw, 4.5rem); }
+      .hero-apellido{ font-size: clamp(2.2rem, 8vw, 3.5rem); }
+      .hero-text p  { font-size: clamp(1.5rem, 5.5vw, 2rem); }
+
+      /* Imágenes flotantes más grandes en móvil */
+      .hf-tl, .hf-tr { width: clamp(110px, 28vw, 220px); }
+      .hf-ml, .hf-mr { width: clamp(95px, 24vw, 190px); }
+      .hf-bl, .hf-br { width: clamp(110px, 28vw, 220px); }
+      .hf-tc, .hf-bc { width: clamp(75px, 18vw, 140px); }
+
+      /* Adornos de esquina más grandes */
+      .corner-decor  { width: clamp(100px, 26vw, 180px) !important; }
+
+      /* Countdown más compacto pero legible */
+      .countdown-grid    { gap: 0.4rem; flex-wrap: nowrap; }
+      .countdown-item    { min-width: clamp(62px, 18vw, 95px); padding: 0.7rem 0.3rem; }
+      .countdown-number  { font-size: clamp(2.4rem, 11vw, 4rem); }
+      .countdown-label   { font-size: clamp(0.65rem, 2.2vw, 0.85rem); }
+      .countdown-separator { font-size: clamp(1.8rem, 7vw, 3.5rem); }
+
+      /* Fecha/hora */
+      .datetime-card  { padding: 1.8rem 1.2rem; }
+      .datetime-value { font-size: clamp(1.8rem, 6vw, 2.6rem); }
+      .datetime-label { font-size: clamp(1rem, 3.5vw, 1.3rem); }
+
+      /* Lugar */
+      .location-container { max-width: 96vw; padding: 1.8rem 1rem; }
+      .location-title  { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+      .location-name   { font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
+      .location-address{ font-size: clamp(1rem, 4vw, 1.2rem); line-height: 2; }
+      .map-wrapper iframe { height: 260px; }
+
+      /* Footer */
+      .footer-text { font-size: clamp(2rem, 7vw, 3rem); }
+    }
+
+    /* ── ≤ 480px ── */
     @media (max-width: 480px) {
-      .countdown-grid {
-        flex-wrap: wrap;
-      }
-      .countdown-item {
-        min-width: 60px;
-      }
-      .map-wrapper iframe {
-        height: 250px;
-      }
-      .corner-decor {
-        width: clamp(80px, 22vw, calc(var(--adorno-size) * 0.6)) !important;
-      }
+      .img-toy-story { width: 100vw !important; max-width: 100vw !important; }
+
+      .hf-tl, .hf-tr { width: clamp(95px, 30vw, 150px); }
+      .hf-ml, .hf-mr { width: clamp(80px, 25vw, 130px); }
+      .hf-bl, .hf-br { width: clamp(95px, 30vw, 150px); }
+      .hf-tc, .hf-bc { width: clamp(60px, 18vw, 100px); }
+
+      .corner-decor  { width: clamp(90px, 28vw, 150px) !important; }
+
+      .countdown-item    { min-width: clamp(58px, 17vw, 85px); padding: 0.6rem 0.2rem; }
+      .countdown-number  { font-size: clamp(2rem, 10.5vw, 3.5rem); }
+      .countdown-separator { font-size: clamp(1.5rem, 6.5vw, 2.8rem); margin-bottom: 0.8rem; }
+
+      .map-wrapper iframe { height: 220px; }
     }
+
+    /* ── ≤ 360px ── */
+    @media (max-width: 360px) {
+      .countdown-number  { font-size: clamp(1.7rem, 9.5vw, 2.8rem); }
+      .countdown-separator { font-size: clamp(1.2rem, 5.5vw, 2rem); }
+      .corner-decor { width: clamp(70px, 24vw, 110px) !important; }
+      .hf-tl,.hf-tr,.hf-bl,.hf-br { width: clamp(70px, 26vw, 110px); }
+      .hf-ml,.hf-mr { width: clamp(60px, 22vw, 95px); }
+    }
+
+    /* ══════════════════════════════════════════
+       BOTÓN DE MÚSICA FLOTANTE
+    ══════════════════════════════════════════ */
+    #musicToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2.5px solid var(--azul-oscuro);
+      box-shadow: 0 4px 14px rgba(27,94,158,0.25);
+      cursor: pointer;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #musicToggle:active {
+      transform: scale(0.92);
+    }
+    #musicToggle svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--azul-oscuro);
+      display: block;
+    }
+    #musicToggle .icon-pause { display: block; }
+    #musicToggle .icon-play  { display: none;  }
+    #musicToggle.paused .icon-pause { display: none;  }
+    #musicToggle.paused .icon-play  { display: block; }
   </style>
 </head>
 <body>
@@ -549,26 +726,14 @@
     <!-- ═══════════════════════════════════════════════
          SECCIÓN 1: HERO / BIENVENIDA
     ═══════════════════════════════════════════════ -->
-    <section class="hero-section" id="sec-hero">
+    <img src="toy story primera sección.png" alt="Personajes Toy Story" style="width:100%;display:block;margin:0;padding:0;">
 
-      <!-- Adornos de esquina - globos y decoraciones infantiles -->
-      <img src="globo esquina superior.png" alt="globo esquina superior izquierda" class="corner-decor corner-tl" id="c1-tl">
-      <img src="globo esquina superior.png" alt="globo esquina superior derecha" class="corner-decor corner-tr" id="c1-tr">
-      <img src="globo esquina inferior.png" alt="globo esquina inferior izquierda" class="corner-decor corner-bl" id="c1-bl">
-      <img src="globo esquina inferior derecha.png" alt="globo esquina inferior derecha" class="corner-decor corner-br" id="c1-br">
+     <section class="parents-section" id="sec-parents"></section>
 
-
-      <div class="hero-inner" data-aos="fade-down" data-aos-duration="1200">
-        <span class="hero-birthday-number">4</span>
-        <span class="hero-birthday-label">¡Años!</span>
-        <span class="hero-name">Américo Alexander</span>
-        <span class="hero-apellido">Choque Flores</span>
-
-        <div class="hero-text">
-          <p>¡Te invito a celebrar este día tan especial!</p>
-        </div>
+ 
+          <div class="parents-photo-frame" data-aos="fade-down" data-aos-duration="1200">
+        <img src="foto americo.png" alt="Miguel y Melissa" class="parents-photo">
       </div>
-    </section>
 
     <!-- ═══════════════════════════════════════════════
          CUENTA REGRESIVA
@@ -610,10 +775,10 @@
     <section class="datetime-section" id="sec-datetime">
 
       <!-- Adornos de esquina -->
-      <img src="pastel.png" alt="pastel esquina superior izquierda" class="corner-decor corner-tl" id="c4-tl">
-      <img src="globo esquina superior.png" alt="pastel esquina superior derecha" class="corner-decor corner-tr" id="c4-tr">
-      <img src="globo esquina superior.png" alt="pastel esquina inferior izquierda" class="corner-decor corner-bl" id="c4-bl">
-      <img src="pastel.png" alt="pastel esquina inferior derecha" class="corner-decor corner-br" id="c4-br">
+      <img src="caballo.png" alt="pastel esquina superior izquierda" class="corner-decor corner-tl" id="c4-tl">
+      <img src="estrella.png" alt="pastel esquina superior derecha" class="corner-decor corner-tr" id="c4-tr">
+      <img src="globo esquina inferior.png" alt="pastel esquina inferior izquierda" class="corner-decor corner-bl" id="c4-bl">
+      <img src="Slinky.png" alt="pastel esquina inferior derecha" class="corner-decor corner-br" id="c4-br">
 
       <div class="datetime-container">
         <div class="datetime-card" data-aos="fade-right" data-aos-duration="1000">
@@ -633,11 +798,8 @@
     <section class="location-section" id="sec-location">
 
       <!-- Adornos de esquina -->
-      <img src="globo esquina superior.png" alt="regalo esquina inferior izquierda" class="corner-decor corner-bl" id="c5-bl">
-      <img src="globo esquina superior.png" alt="regalo esquina inferior derecha" class="corner-decor corner-br" id="c5-br">
-
-      <img src="planta-hoja-5.png" alt="" class="leaf-layer leaf-tl" id="l6a">
-      <img src="planta-hoja-3.png" alt="" class="leaf-layer leaf-br" id="l6b">
+      <img src="woody.png" alt="regalo esquina inferior izquierda" class="corner-decor corner-bl" id="c5-bl">
+      <img src="buzz.png" alt="regalo esquina inferior derecha" class="corner-decor corner-br" id="c5-br">
 
       <div class="location-container" data-aos="fade-down" data-aos-duration="1200">
         <h2 class="location-title">Lugar del Evento</h2>
@@ -663,12 +825,29 @@
 
       <div class="footer-content" data-aos="fade-down" data-aos-duration="1200">
         <!-- León central arriba -->
-
-        <p class="footer-text">¡Te esperamos!</p>
-      </div>
     </footer>
 
  
+
+  <!-- ── AUDIO ── -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="cancion.mp4" type="audio/mp4">
+    <source src="cancion.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ── BOTÓN FLOTANTE PAUSA/PLAY ── -->
+  <button id="musicToggle" onclick="toggleMusic()" aria-label="Pausar/reproducir música">
+    <!-- Icono PAUSE -->
+    <svg class="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <rect x="5" y="3" width="4" height="18" rx="1"/>
+      <rect x="15" y="3" width="4" height="18" rx="1"/>
+    </svg>
+    <!-- Icono PLAY -->
+    <svg class="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 3.75v16.5L20 12 6 3.75z"/>
+    </svg>
+  </button>
+
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
@@ -696,6 +875,9 @@
     setInterval(actualizarContador, 1000);
     actualizarContador();
 
+    // ── Bloquear scroll mientras el cover está activo ──
+    document.body.classList.add('cover-active');
+
     // ── COVER CLICK → SHOW CONTENT + INICIAR MÚSICA ──
     const cover   = document.getElementById('cover');
     const content = document.getElementById('content');
@@ -704,6 +886,7 @@
     cover.addEventListener('touchend', openInvitation, {passive: true});
 
     function openInvitation() {
+      document.body.classList.remove('cover-active');
       cover.style.display = 'none';
       content.style.display = 'block';
       content.offsetHeight; // force reflow
@@ -713,8 +896,9 @@
       setTimeout(() => { AOS.refresh(); }, 100);
     }
 
-    // ── MÚSICA con MP3 local ──
+    // ── MÚSICA ──
     const audio = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('musicToggle');
     let isPlaying = false;
 
     function startMusic() {
@@ -723,24 +907,32 @@
       if (playPromise !== undefined) {
         playPromise.then(() => {
           isPlaying = true;
-          document.getElementById('musicToggle').classList.add('playing');
+          musicBtn.style.display = 'flex';
+          // Si fue pausado manualmente, no re-arranca solo
         }).catch(() => {
-          // El autoplay fue bloqueado por el navegador; el usuario puede usar el botón
           isPlaying = false;
+          musicBtn.style.display = 'flex';
+          musicBtn.classList.add('paused');
         });
       }
     }
 
+    // Cuando la canción termina (por si acaso loop falla), vuelve a sonar
+    audio.addEventListener('ended', () => {
+      audio.currentTime = 0;
+      audio.play().then(() => { isPlaying = true; musicBtn.classList.remove('paused'); });
+    });
+
     function toggleMusic() {
-      const mt = document.getElementById('musicToggle');
       if (isPlaying) {
         audio.pause();
         isPlaying = false;
-        mt.classList.remove('playing');
+        musicBtn.classList.add('paused');
       } else {
-        audio.play();
-        isPlaying = true;
-        mt.classList.add('playing');
+        audio.play().then(() => {
+          isPlaying = true;
+          musicBtn.classList.remove('paused');
+        });
       }
     }
 
